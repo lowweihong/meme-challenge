@@ -11,7 +11,7 @@ from datasets import load_from_disk
 import io
 from time import time
 import pdb
-from models.clip import *
+from models.clip_selfatt import *
 from util import *
 
 
@@ -19,7 +19,7 @@ if __name__ == '__main__':
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model_dir = './model_output/'
     # model_file_name = 'clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt'
-    model_file_name = 'clip_entire_model_added_sigmoid_gradclip-cross-layer5.pt'
+    model_file_name = 'clip_entire_model_added_sigmoid_gradclip-att-layer5.pt'
     print("Resize added")
 
     if not os.path.exists(model_dir):

@@ -12,8 +12,8 @@ class CLIPProcessDataset(Dataset):
     def __init__(self, dataset):
         self.image_size = 224
         self.dataset = dataset
-        self.image_processor = CLIPProcessor.from_pretrained('openai/clip-vit-large-patch14')#'laion/CLIP-ViT-B-32-laion2B-s34B-b79K')#openai/clip-vit-base-patch32')
-        self.text_processor = CLIPTokenizer.from_pretrained('openai/clip-vit-large-patch14')#'laion/CLIP-ViT-B-32-laion2B-s34B-b79K')#openai/clip-vit-base-patch32')
+        self.image_processor = CLIPProcessor.from_pretrained('openai/clip-vit-large-patch14')#openai/clip-vit-base-patch32')
+        self.text_processor = CLIPTokenizer.from_pretrained('openai/clip-vit-large-patch14')#openai/clip-vit-base-patch32') laion/CLIP-ViT-B-32-laion2B-s34B-b79K
 
     def __len__(self):
         return len(self.dataset)
@@ -53,7 +53,7 @@ class CLIPClassifier(nn.Module):
         self.map_dim = map_dim
         self.dropout_lst = dropout_lst
         self.num_mapping_layers = 5
-        self.head = 'cross'
+        self.head = 'self-att'
 
         self.clip = CLIPModel.from_pretrained(pretrained_model)
         self.image_encoder = copy.deepcopy(self.clip.vision_model)
@@ -79,6 +79,11 @@ class CLIPClassifier(nn.Module):
             pre_output_input_dim = self.map_dim*2
         elif self.head == 'cross':
             pre_output_input_dim = self.map_dim**2
+        elif self.head == 'self-att':
+            self.key = nn.Linear(self.map_dim*2, self.map_dim*2)
+            self.query = nn.Linear(self.map_dim*2, self.map_dim*2)
+            self.value = nn.Linear(self.map_dim*2, self.map_dim*2)
+            pre_output_input_dim = self.map_dim*2
 
         pre_output_layers = [nn.Dropout(p=self.dropout_lst[1])]
         pre_output_layers.extend([nn.Linear(pre_output_input_dim, self.map_dim),
@@ -124,6 +129,25 @@ class CLIPClassifier(nn.Module):
             # import pdb; pdb.set_trace()
             features = torch.bmm(image_features.unsqueeze(2), text_features.unsqueeze(1)) # [16, d, d]
             features = features.reshape(features.shape[0], -1)  # [16, d*d]
+        elif self.head == 'self-att':
+            x = torch.cat([image_features, text_features], dim=1)
+            keys = self.key(x)
+            queries = self.query(x)
+            values = self.value(x)
+
+            # Scaled dot-product attention
+            scores = torch.matmul(queries, keys.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.map_dim*2, dtype=torch.float32))
+
+            # # Apply mask (if provided)
+            # if mask is not None:
+            #     scores = scores.masked_fill(mask == 0, -1e9)
+
+            # Apply softmax
+            attention_weights = F.softmax(scores, dim=-1)
+
+            # Multiply weights with values
+            features = torch.matmul(attention_weights, values)
+            
         # import pdb; pdb.set_trace()
         features = self.pre_output(features)
         logits = self.output(features)
