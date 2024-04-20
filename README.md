@@ -11,12 +11,12 @@
 
 ## Performance
 ### CLIP
-| Model    | map_dim | epo | head | map_dim | train_acc | dev_seen_acc | dev_seen_auc | dev_unseen_auc | Filename | batch_size | LR |
-| -------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-| openai/clip-vit-large-patch14  |  1  |  15 | concat | 32 |  - | - | 0.652 |0.760 |  clip_entire_model_added_sigmoid_gradclip.pt | 16 | 1e-4 | 
-| openai/clip-vit-large-patch14  |  1  |  15 | concat | 1024 | - |0.674 | 0.772 | 0.7643 | clip_entire_model_added_sigmoid_gradclip.pt | 64 | 1e-4 |
-| openai/clip-vit-large-patch14  |  1  |  20 | cross | 1024 | 0.9950 | 0.7 | 0.8278 | 0.811 | clip_entire_model_added_sigmoid_gradclip-cross.pt | 64 | 1e-4 |
-| laion/CLIP-ViT-B-32-laion2B-s34B-b79K  |  1  |  20 | cross | 1024 | 0.98788 | 0.67 | 0.7594 | 0.745 | clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt | 64 | 1e-4 |
+| Model    |  epo | head | map_dim | train_acc | dev_seen_acc | dev_seen_auc | dev_unseen_auc | Filename | batch_size | LR |
+| -------- |  ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
+| openai/clip-vit-large-patch14  |    15 | concat | 32 |  - | - | 0.652 |0.760 |  clip_entire_model_added_sigmoid_gradclip.pt | 16 | 1e-4 | 
+| openai/clip-vit-large-patch14  |    15 | concat | 1024 | - |0.674 | 0.772 | 0.7643 | clip_entire_model_added_sigmoid_gradclip.pt | 64 | 1e-4 |
+| openai/clip-vit-large-patch14  |  20 | cross | 1024 | 0.9950 | 0.7 | 0.8278 | 0.811 | clip_entire_model_added_sigmoid_gradclip-cross.pt | 64 | 1e-4 |
+| laion/CLIP-ViT-B-32-laion2B-s34B-b79K  |   20 | cross | 1024 | 0.98788 | 0.67 | 0.7594 | 0.745 | clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt | 64 | 1e-4 |
 
 
 ## BLIP
