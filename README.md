@@ -3,11 +3,18 @@
 
 # Usage
 ## Extract raw dataset into Dataset object
-1. Download hateful meme dataset zip file, unzip and placed into directory `hateful_memes`, run `python convert_dataset.py`
+1. Download hateful meme dataset zip file, unzip and place into directory `hateful_memes`, run `python convert_dataset.py`
+2. 
+## Extract Adversarial/Image Augmented Datasets
+   1. Download adversarial dataset zip from external link [here](https://drive.google.com/file/d/11DTJKmRSW8fKXxgbtqwDWEmLAAA2beyg/view?usp=drive_link) (185MB) and augmented dataset zip [here](https://drive.google.com/file/d/1-1eYLaY6-jjFl0weE6MnixEeqISqwGwS/view?usp=drive_link)(2.77GB).
+   2. Unzip files into directory `hateful_memes`
+   3. Copy desired dataset jsonl files from `adversarial_robustness/adv_datasets` and place it into `hateful_memes`
+   4. Run `python convert_adv_dataset.py`
 
 ## Build new model and train
-1. Specified your own model architeture, `train_*.py` file should be modified to use your own model architeture (minimal modification is expected).
-2. Models architeture can be found in models/*.
+1. Specified your own model architeture, `train_*.py` file should be modified to use your own model architecture (minimal modification is expected).
+2. Models architecture can be found in models/*.
+
 
 ## Performance
 ### CLIP
