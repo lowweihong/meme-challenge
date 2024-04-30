@@ -18,12 +18,27 @@
 
 ## Performance
 ### CLIP
-| Model    |  epo | head | map_dim | train_acc | dev_seen_acc | dev_seen_auc | dev_unseen_auc | Filename | batch_size | LR |
-| -------- |  ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-| openai/clip-vit-large-patch14  |    15 | concat | 32 |  - | - | 0.652 |0.760 |  clip_entire_model_added_sigmoid_gradclip.pt | 16 | 1e-4 | 
-| openai/clip-vit-large-patch14  |    15 | concat | 1024 | - |0.674 | 0.772 | 0.7643 | clip_entire_model_added_sigmoid_gradclip.pt | 64 | 1e-4 |
-| openai/clip-vit-large-patch14  |  20 | cross | 1024 | 0.9950 | 0.7 | 0.8278 | 0.811 | clip_entire_model_added_sigmoid_gradclip-cross.pt | 64 | 1e-4 |
-| laion/CLIP-ViT-B-32-laion2B-s34B-b79K  |   20 | cross | 1024 | 0.98788 | 0.67 | 0.7594 | 0.745 | clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt | 64 | 1e-4 |
+|            CLIP Variations            | #Proj layer | map_dim | #P.O layer | Epo | BS |    LR    |  Fusion  | Train ACC |    AUC   |            |           |             | ACC      |            |           |             | Model FP                                                                                |
+|:-------------------------------------:|-------------|:-------:|:----------:|:---:|:--:|:--------:|:--------:|:---------:|:--------:|:----------:|:---------:|:-----------:|----------|------------|-----------|-------------|-----------------------------------------------------------------------------------------|
+|                                       |             |         |            |     |    |          |          |           | Dev seen | Dev unseen | Test seen | Test unseen | Dev seen | Dev unseen | Test seen | Test unseen |                                                                                         |
+| clip-vit-large-patch14                | 1           | 1024    | 1          | 15  | 64 | 1.00E-04 | concat   |     | 0.7658   | 0.755      | 0.7643    | 0.797       | 69.00%   | 70.20%     | 73.10%    | 73.30%      | clip_entire_model_added_sigmoid_gradclip.pt                                             |
+| clip-vit-large-patch14                | 5           | 1024    | 1          | 20  | 64 | 1.00E-04 | cross    | 99.50%    | 0.8276   | 0.8113     | 0.834     | 0.824       | 69.60%   | 75.70%     | 72.90%    | 75.60%      | clip_entire_model_added_sigmoid_gradclip-cross.pt                                       |
+| openai/clip-vit-large-patch14         | 5           | 1024    | 1          | 20  | 64 | 1.00E-04 | self-att | 64.48%   | 0.4927   | 0.5291     | 0.505     | 0.51        | 50.60%   | 63.00%     | 51.00%    | 63.50%      | clip_entire_model_added_sigmoid_gradclip-att-layer5.pt                                  |
+| openai/clip-vit-large-patch14         | 10          | 1024    | 1          | 20  | 64 | 1.00E-04 | cross    | 97.35%    | 781      | 0.765      | 0.785     | 0.766       | 69.20%   | 73.90%     | 69.60%    | 73.30%      | clip_entire_model_added_sigmoid_gradclip-cross-layer10.pt                               |
+| laion/CLIP-ViT-B-32-laion2B-s34B-b79K | 5           | 1024    | 1          | 20  | 64 | 1.00E-04 | cross    | 98.79%    | 0.7539   | 0.7381     | 0.769     | 0.766       | 67.00%   | 69.10%     | 69.10%    | 73.30%      | clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt |
+
+
+## DRAFT
+### CLIP
+| Model    |  epo | head | map_dim | train_acc | dev_seen_acc | dev_seen_auc | dev_unseen_auc | Filename | batch_size | LR | layer |
+| -------- |  ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |------- |
+| openai/clip-vit-large-patch14  |    15 | concat | 32 |  - | - | 0.652 |0.760 |  clip_entire_model_added_sigmoid_gradclip.pt | 16 | 1e-4 | 1 |
+| openai/clip-vit-large-patch14  |    15 | concat | 1024 | - |0.674 | 0.772 | 0.7643 | clip_entire_model_added_sigmoid_gradclip.pt | 64 | 1e-4 | 1 |
+| openai/clip-vit-large-patch14  |  20 | cross | 1024 | 0.9950 | 0.7 | 0.8278 | 0.811 | clip_entire_model_added_sigmoid_gradclip-cross.pt | 64 | 1e-4 | 5 |
+| laion/CLIP-ViT-B-32-laion2B-s34B-b79K  |   20 | cross | 1024 | 0.98788 | 0.67 | 0.7594 | 0.745 | clip_entire_model_added_sigmoid_gradclip_laion-CLIP-ViT-B-32-laion2B-s34B-b79K-cross.pt | 64 | 1e-4 | 5 |
+| openai/clip-vit-large-patch14  |  20 | self-att | 1024 | 0.6448 | 0.506 | 0.538 | 0.5145 | clip_entire_model_added_sigmoid_gradclip-att-layer5.pt | 64 | 1e-4 | 5 |
+| openai/clip-vit-large-patch14  |  20 (max when epo 6) | cross | 1024 | 0.97352 | 0.688 | 0.7825 | 0.76997 | clip_entire_model_added_sigmoid_gradclip-cross-layer10.pt | 64 | 1e-4 | 10 |
+| openai/clip-vit-large-patch14  |  20 | cross | 1024 | 0.6504 | 0.504 | 0.54513 |  | clip_entire_model_added_sigmoid_gradclip-cross-unfreeze-last-block.pt | 8 | 1e-4 | 5 |
 
 
 ## BLIP
@@ -41,6 +56,7 @@
 | Blip2Model "Salesforce/blip2-flan-t5-xl" |  10 (max when 5) | 5e-4 | 0.83482 | 0.662 | 0.7438 | 0.724 | blip_entire_model_kx_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat-layer5.pt | 8 |
 | Blip2Model "Salesforce/blip2-flan-t5-xl" |  10 (max when 10) | 5e-3 | 0.863 | 0.68 | 0.7318 | 0.72669 | blip_entire_model_kx_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat-layer5-LR-5e-3.pt | 8 |
 | Blip2Model "Salesforce/blip2-opt-2.7b" |  10 (max when 9) | 5e-4 | 0.779 | 0.628 | 0.7287 | 0.7155 | blip_entire_model_kx_Salesforce-BlipModel-blip2-inn-concat-epo30.pt | 8 |
+| Dino+BGE "facebook/dinov2-large" + BAAI/bge-m3 |  20 | 5e-4 | 0.9815 | 0.59 | 0.6067 | 0.622 | dino_large_bge.pt | 32 |
 
 - blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-base-inn.pt *individual
 - epo: 5 (15)
