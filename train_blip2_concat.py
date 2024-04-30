@@ -12,7 +12,7 @@ import torch
 import os
 from util import evaluate, base64str_to_PILobj
 # from models.blip_exp2 import *
-from models.blip2_feasExtract import *
+from models.blip2_concat import *
 from sklearn.metrics import roc_auc_score
 
 
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     #optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)#torch.optim.AdamW(model.parameters(), lr=1e-4)
     
     
-    epochs = 30
+    epochs = 10
     n_total_steps = len(train_dataloader)
     epo_loss = []
     best_auc = 0

@@ -12,7 +12,7 @@ import torch
 import os
 from util import evaluate, base64str_to_PILobj
 # from models.blip_exp2 import *
-from models.blip_feasExtract import *
+from models.blip_concat import *
 from sklearn.metrics import roc_auc_score
 
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     model_dir = './model_output/'
     # model_file_name = 'blip_entire_model_kx_Salesforce-blip-vqa-base-concat.pt' #1
     # model_file_name = 'blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-large-coco-new.pt'
-    model_file_name = 'blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn-cross-new-unfreeze-5ep.pt' #2
+    model_file_name = 'blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn-CROSS.pt' #2
 
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     model.to(device)
 
     print("Loading data")
-    batch_size = 64 #256 cannot
+    batch_size = 16 #256 cannot
     combined = load_from_disk('./processed_data/combined_hateful_memes_dataset')
     train_data = combined['train']
     print('processing image...')
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                 print(f"    Batch [{idx+1}/{n_total_steps}] Loss: {loss.item():.4f} Train Acc: {((predicted==labels).sum().item()/labels.size(0)):.4f} ({(time()-start_batch):.4f}s)")#, AUC = {auc:.4f}. 
 
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
             optimizer.step()
 
             #optimizer.zero_grad()

@@ -1,9 +1,11 @@
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
-from transformers import BlipForConditionalGeneration, BlipForQuestionAnswering, AutoProcessor, BlipTextModel, BlipModel, BlipForImageTextRetrieval
+from transformers import AutoProcessor, BlipForImageTextRetrieval
 from util import base64str_to_PILobj
 import torch
 import copy
+
+pretrained_model = 'Salesforce/blip-itm-large-coco'
 
 class CustomBLIP(nn.Module):
     def __init__(self,
@@ -18,9 +20,8 @@ class CustomBLIP(nn.Module):
         self.tokenizer = tokenizer
         self.num_labels = 1
 
-        # self.blip = BlipModel()
-        # self.blip = torch.load('model_output/blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco.pt')
-        self.blip = BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-large-coco")#BlipModel.from_pretrained("Salesforce/blip-vqa-base")
+        # self.blip = BlipModel(pretrained_model)
+        self.blip = BlipForImageTextRetrieval.from_pretrained(pretrained_model)#BlipModel.from_pretrained("Salesforce/blip-vqa-base")
         # self.blip = torch.load('model_output/blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco-concat.pt')
         # BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-base-coco")
         # BlipModel.from_pretrained("Salesforce/blip-vqa-base")
@@ -135,7 +136,7 @@ class BLIPProcessDataset(Dataset):
     def __init__(self, dataset):
         self.image_size = 224
         self.dataset = dataset
-        self.processor = AutoProcessor.from_pretrained("Salesforce/blip-itm-large-coco")
+        self.processor = AutoProcessor.from_pretrained(pretrained_model)
 
     def __len__(self):
         return len(self.dataset)
@@ -162,5 +163,5 @@ class BLIPProcessDataset(Dataset):
             'image': item['image']
         }
 
-# blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco-new.pt
-# CUR > 'blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-large-coco-new.pt'
+# blip_entire_model_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco-new.pt
+# CUR > 'blip_entire_model_Salesforce-BlipForImageTextRetrieval-blip-itm-large-coco-new.pt'

@@ -11,7 +11,7 @@ from datasets import load_from_disk
 import io
 from time import time
 import pdb
-from models.clip_unfreeze_block import *
+from models._clip_unfreeze_block import *
 from util import *
 
 

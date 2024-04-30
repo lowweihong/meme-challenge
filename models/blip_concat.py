@@ -165,5 +165,5 @@ class BLIPProcessDataset(Dataset):
             'image': item['image']
         }
 
-# blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
-# CUR > blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn.pt
+# blip_entire_model_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
+# CUR > blip_entire_model_Salesforce-BlipModel-blip-image-captioning-large-inn.pt

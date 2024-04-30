@@ -27,7 +27,8 @@ class CustomBLIP(nn.Module):
         self.tokenizer = tokenizer
         self.num_labels = 1
 
-        self.blip = Blip2Model.from_pretrained("Salesforce/blip2-opt-2.7b")#, torch_dtype=torch.float16)
+        self.blip = Blip2Model.from_pretrained("Salesforce/blip2-flan-t5-xl")#, torch_dtype=torch.float16)
+        # self.blip = Blip2Model.from_pretrained("Salesforce/blip2-flan-t5-xl")#, torch_dtype=torch.float16)
         # self.blip = torch.load("model_output/blip_entire_model_kx_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat.pt")
 
         # self.image_encoder = copy.deepcopy(self.blip.vision_model)
@@ -36,10 +37,8 @@ class CustomBLIP(nn.Module):
         # Not using pretrained map
         image_map_layers = [nn.Linear(self.blip.vision_model.config.hidden_size, self.map_dim),
                             nn.Dropout(p=self.dropout_lst[0])]
-        text_map_layers = [nn.Linear(self.blip.vision_model.config.projection_dim, self.map_dim),
-                           nn.Dropout(p=self.dropout_lst[0])]
-        # text_map_layers = [nn.Linear(self.blip.language_model.config.vocab_size, self.map_dim),
-        #                    nn.Dropout(p=self.dropout_lst[0])] # For flank
+        text_map_layers = [nn.Linear(self.blip.language_model.config.vocab_size, self.map_dim),
+                               nn.Dropout(p=self.dropout_lst[0])] # For flank
         qformer_map_layers = [nn.Linear(self.blip.qformer.config.hidden_size, self.map_dim),
                            nn.Dropout(p=self.dropout_lst[0])]
         for _ in range(1, self.num_mapping_layers):
@@ -102,17 +101,13 @@ class CustomBLIP(nn.Module):
                                                     return_dict=True, output_hidden_states=True).pooler_output #[bs, 1408]
             # **batch)
         # import pdb; pdb.set_trace()
+        
         text_embeds = self.blip.get_text_features(input_ids=input_ids.squeeze(1), 
                                                   attention_mask=attention_mask.squeeze(1),
                                                   return_dict=True, 
-                                                  output_hidden_states=True
-                                                  )[0][:,:,0]#[0] #[bs, 512, 50272]
-        # text_embeds = self.blip.get_text_features(input_ids=input_ids.squeeze(1), 
-        #                                           attention_mask=attention_mask.squeeze(1),
-        #                                           return_dict=True, 
-        #                                           output_hidden_states=True,
-        #                                           decoder_input_ids=batch['pad_token_id'].reshape(batch['pad_token_id'].shape[0],1).to(device) #For Salesforce/blip2-flan-t5-xl only
-        #                                           )[0].squeeze(1) # For flan
+                                                  output_hidden_states=True,
+                                                  decoder_input_ids=batch['pad_token_id'].reshape(batch['pad_token_id'].shape[0],1).to(device) #For Salesforce/blip2-flan-t5-xl only
+                                                  )[0].squeeze(1) # For flan
         
             # **batch)
         qformer_feas = self.blip.get_qformer_features(pixel_values=pixel_values.squeeze(1),
@@ -157,10 +152,10 @@ class CustomBLIP(nn.Module):
 
 class BLIPProcessDataset(Dataset):
     def __init__(self, dataset):
-        self.image_size = 224
+        self.image_size = 518#224
         self.dataset = dataset
-        self.processor = Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl")
-        self.tokenizer = AutoTokenizer.from_pretrained("Salesforce/blip2-flan-t5-xl")
+        self.processor = Blip2Processor.from_pretrained('Salesforce/blip2-flan-t5-xl')
+        self.tokenizer = AutoTokenizer.from_pretrained('Salesforce/blip2-flan-t5-xl')
 
     def __len__(self):
         return len(self.dataset)
@@ -192,5 +187,5 @@ class BLIPProcessDataset(Dataset):
             'pad_token_id': self.tokenizer.pad_token_id,
         }
 
-# blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
-# CUR > blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn.pt
+# blip_entire_model_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
+# CUR > blip_entire_model_Salesforce-BlipModel-blip-image-captioning-large-inn.pt
