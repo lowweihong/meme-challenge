@@ -20,8 +20,8 @@ if __name__ == '__main__':
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     model_dir = './model_output/'
-    # model_file_name = 'blip_entire_model_kx_Salesforce-blip-vqa-base-concat.pt' #1
-    # model_file_name = 'blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-large-coco-new.pt'
+    # model_file_name = 'blip_entire_model_Salesforce-blip-vqa-base-concat.pt' #1
+    # model_file_name = 'blip_entire_model_Salesforce-BlipForImageTextRetrieval-blip-itm-large-coco-new.pt'
     model_file_name = 'blip_entire_model_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat-layer5-LR-5e-3.pt' #2
 
     if not os.path.exists(model_dir):

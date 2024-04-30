@@ -28,7 +28,7 @@ class CustomBLIP(nn.Module):
         self.num_labels = 1
 
         # self.blip = BlipModel.from_pretrained("Salesforce/blip-image-captioning-large")
-        self.blip = torch.load('model_output/blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn-cross-new.pt')
+        self.blip = torch.load('model_output/blip_entire_model_Salesforce-BlipModel-blip-image-captioning-large-inn-cross-new.pt')
 
         # self.image_encoder = copy.deepcopy(self.blip.vision_model)
         # self.text_encoder = copy.deepcopy(self.blip.text_model)
@@ -178,5 +178,5 @@ class BLIPProcessDataset(Dataset):
             'image': item['image']
         }
 
-# blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
-# CUR > blip_entire_model_kx_Salesforce-BlipModel-blip-image-captioning-large-inn-cross-new.pt
+# blip_entire_model_Salesforce-BlipModel-blip-image-captioning-base-inn.pt
+# CUR > blip_entire_model_Salesforce-BlipModel-blip-image-captioning-large-inn-cross-new.pt

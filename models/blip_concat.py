@@ -1,11 +1,12 @@
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
-from transformers import BlipForConditionalGeneration, BlipForQuestionAnswering, AutoProcessor, BlipTextModel, BlipModel, BlipForImageTextRetrieval
+from transformers import AutoProcessor, BlipModel
 from util import base64str_to_PILobj
 import torch
 import copy
 import torch.nn.functional as F
 import torch
+
 
 class CustomBLIP(nn.Module):
     def __init__(self,
@@ -130,6 +131,7 @@ class CustomBLIP(nn.Module):
         for model_pair in self.model_pairs:
             for param, param_m in zip(model_pair[0].parameters(), model_pair[1].parameters()):
                 param_m.data = param_m.data * self.momentum + param.data * (1. - self.momentum)
+
 
 class BLIPProcessDataset(Dataset):
     def __init__(self, dataset):

@@ -29,7 +29,7 @@ class CustomBLIP(nn.Module):
 
         self.blip = Blip2Model.from_pretrained("Salesforce/blip2-flan-t5-xl")#, torch_dtype=torch.float16)
         # self.blip = Blip2Model.from_pretrained("Salesforce/blip2-flan-t5-xl")#, torch_dtype=torch.float16)
-        # self.blip = torch.load("model_output/blip_entire_model_kx_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat.pt")
+        # self.blip = torch.load("model_output/blip_entire_model_Salesforce-BlipModel-blip2-flan-t5-xlinn-concat.pt")
 
         # self.image_encoder = copy.deepcopy(self.blip.vision_model)
         # self.text_encoder = copy.deepcopy(self.blip.text_model)

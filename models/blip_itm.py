@@ -22,7 +22,7 @@ class CustomBLIP(nn.Module):
 
         # self.blip = BlipModel(pretrained_model)
         self.blip = BlipForImageTextRetrieval.from_pretrained(pretrained_model)#BlipModel.from_pretrained("Salesforce/blip-vqa-base")
-        # self.blip = torch.load('model_output/blip_entire_model_kx_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco-concat.pt')
+        # self.blip = torch.load('model_output/blip_entire_model_Salesforce-BlipForImageTextRetrieval-blip-itm-base-coco-concat.pt')
         # BlipForImageTextRetrieval.from_pretrained("Salesforce/blip-itm-base-coco")
         # BlipModel.from_pretrained("Salesforce/blip-vqa-base")
         # for param in self.model.parameters():

@@ -13,6 +13,7 @@ from time import time
 import pdb
 from models.clip_selfatt import *
 from util import *
+import os
 
 
 if __name__ == '__main__':
