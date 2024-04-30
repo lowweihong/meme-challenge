@@ -4,7 +4,7 @@
 # Usage
 ## Extract raw dataset into Dataset object
 1. Download hateful meme dataset zip file, unzip and place into directory `hateful_memes`, run `python convert_dataset.py`
-2. 
+
 ## Extract Adversarial/Image Augmented Datasets
    1. Download adversarial dataset zip from external link [here](https://drive.google.com/file/d/11DTJKmRSW8fKXxgbtqwDWEmLAAA2beyg/view?usp=drive_link) (185MB) and augmented dataset zip [here](https://drive.google.com/file/d/1-1eYLaY6-jjFl0weE6MnixEeqISqwGwS/view?usp=drive_link)(2.77GB).
    2. Unzip files into directory `hateful_memes`
@@ -21,7 +21,7 @@
 |            CLIP Variations            | #Proj layer | map_dim | #P.O layer | Epo | BS |    LR    |  Fusion  | Train ACC |    AUC   |            |           |             | ACC      |            |           |             | Model FP                                                                                |
 |:-------------------------------------:|-------------|:-------:|:----------:|:---:|:--:|:--------:|:--------:|:---------:|:--------:|:----------:|:---------:|:-----------:|----------|------------|-----------|-------------|-----------------------------------------------------------------------------------------|
 |                                       |             |         |            |     |    |          |          |           | Dev seen | Dev unseen | Test seen | Test unseen | Dev seen | Dev unseen | Test seen | Test unseen |                                                                                         |
-| clip-vit-large-patch14                | 1           | 1024    | 1          | 15  | 64 | 1.00E-04 | concat   |     | 0.7658   | 0.755      | 0.7643    | 0.797       | 69.00%   | 70.20%     | **73.10%**    | 73.30%      | clip_entire_model_added_sigmoid_gradclip.pt                                             |
+| clip-vit-large-patch14                | 1           | 1024    | 1          | 10  | 64 | 1.00E-04 | concat   |  99.08%   | 0.7658   | 0.755      | 0.7643    | 0.797       | 69.00%   | 70.20%     | **73.10%**    | 73.30%      | clip_entire_model_added_sigmoid_gradclip.pt                                             |
 | clip-vit-large-patch14                | 5           | 1024    | 1          | 20  | 64 | 1.00E-04 | cross    | **99.50%**    | **0.8276**   | **0.8113** | **0.834**     | **0.824**       | 69.60%   | **75.70%**     | 72.90%    | **75.60%**      | clip_entire_model_added_sigmoid_gradclip-cross.pt                                       |
 | openai/clip-vit-large-patch14         | 5           | 1024    | 1          | 20  | 64 | 1.00E-04 | self-att | 64.48%   | 0.4927   | 0.5291     | 0.505     | 0.51        | 50.60%   | 63.00%     | 51.00%    | 63.50%      | clip_entire_model_added_sigmoid_gradclip-att-layer5.pt                                  |
 | openai/clip-vit-large-patch14         | 10          | 1024    | 1          | 20  | 64 | 1.00E-04 | cross    | 97.35%    | 0.781      | 0.765      | 0.785     | 0.766       | 69.20%   | 73.90%     | 69.60%    | 73.30%      | clip_entire_model_added_sigmoid_gradclip-cross-layer10.pt                               |
